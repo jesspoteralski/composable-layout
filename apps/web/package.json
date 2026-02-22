@@ -13,7 +13,7 @@
     "@astrojs/lit": "^4.0.0",
     "lit": "^3.1.0",
     "@sanity/client": "^6.12.0",
-    "@portabletext/html": "^1.0.0",
+    "@portabletext/to-html": "^5.0.0",
     "@composable-layout/components": "*"
   }
 }

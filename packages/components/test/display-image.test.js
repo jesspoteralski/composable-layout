@@ -34,6 +34,6 @@ describe('display-image', () => {
       <display-image src="img.jpg" alt="test" aspect-ratio="16/9"></display-image>
     `);
     const img = el.shadowRoot.querySelector('img');
-    expect(img.style.aspectRatio).to.equal('16/9');
+    expect(img.style.aspectRatio.replace(/\s/g, '')).to.equal('16/9');
   });
 });
