@@ -1,0 +1,8 @@
+{
+  "name": "composable-layout",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
+}

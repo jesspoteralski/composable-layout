@@ -1,0 +1,115 @@
+---
+import { toHTML } from '@portabletext/html';
+
+interface Props {
+  sections: any[];
+}
+
+const { sections = [] } = Astro.props;
+
+function styleAttrs(styles: Record<string, string> | undefined): string {
+  if (!styles) return '';
+  return Object.entries(styles)
+    .filter(([key, val]) => val && !key.startsWith('_'))
+    .map(([key, val]) => {
+      // Convert camelCase to kebab-case for HTML attributes
+      const attr = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+      return `${attr}="${val}"`;
+    })
+    .join(' ');
+}
+
+function renderPortableText(content: any[]): string {
+  if (!content) return '';
+  try {
+    return toHTML(content);
+  } catch {
+    return '';
+  }
+}
+---
+
+{sections.map((section) => {
+  const sAttrs = styleAttrs(section.styles);
+  const items = section.items ?? [];
+
+  if (section._type === 'layoutStack') {
+    return (
+      <layout-stack {...Object.fromEntries(
+        Object.entries(section.styles ?? {}).filter(([k]) => !k.startsWith('_')).map(([k, v]) => [k.replace(/([A-Z])/g, '-$1').toLowerCase(), v])
+      )}>
+        {items.map((item: any) => renderItem(item))}
+      </layout-stack>
+    );
+  }
+
+  if (section._type === 'layoutRow') {
+    return (
+      <layout-row
+        columns={section.columns ?? '50/50'}
+        {...Object.fromEntries(
+          Object.entries(section.styles ?? {}).filter(([k]) => !k.startsWith('_')).map(([k, v]) => [k.replace(/([A-Z])/g, '-$1').toLowerCase(), v])
+        )}
+      >
+        {items.map((item: any) => renderItem(item))}
+      </layout-row>
+    );
+  }
+
+  if (section._type === 'layoutGrid') {
+    return (
+      <layout-grid
+        min-item-width={section.minItemWidth ?? '280px'}
+        {...Object.fromEntries(
+          Object.entries(section.styles ?? {}).filter(([k]) => !k.startsWith('_')).map(([k, v]) => [k.replace(/([A-Z])/g, '-$1').toLowerCase(), v])
+        )}
+      >
+        {items.map((item: any) => renderItem(item))}
+      </layout-grid>
+    );
+  }
+
+  return null;
+})}
+
+{function renderItem(item: any) {
+  const displayAttrs = Object.fromEntries(
+    Object.entries(item.styles ?? {}).filter(([k]) => !k.startsWith('_')).map(([k, v]) => [k.replace(/([A-Z])/g, '-$1').toLowerCase(), v])
+  );
+
+  if (item._type === 'displayText') {
+    return (
+      <display-text {...displayAttrs}>
+        <Fragment set:html={renderPortableText(item.content)} />
+      </display-text>
+    );
+  }
+
+  if (item._type === 'displayImage') {
+    return (
+      <display-image
+        src={item.imageSrc ?? ''}
+        alt={item.alt ?? ''}
+        caption={item.caption ?? ''}
+        aspect-ratio={item.aspectRatio ?? ''}
+        {...displayAttrs}
+      />
+    );
+  }
+
+  if (item._type === 'displayCard') {
+    return (
+      <display-card
+        image-src={item.imageSrc ?? ''}
+        image-alt={item.imageAlt ?? ''}
+        heading={item.heading ?? ''}
+        body={item.body ?? ''}
+        cta-text={item.ctaText ?? ''}
+        cta-href={item.ctaHref ?? ''}
+        {...displayAttrs}
+      />
+    );
+  }
+
+  return null;
+}}

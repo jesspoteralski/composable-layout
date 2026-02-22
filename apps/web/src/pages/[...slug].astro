@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBuilder from '../components/PageBuilder.astro';
+import { getAllPages, getPageBySlug } from '../lib/sanity';
+
+// Register Lit components (side-effect imports for custom element registration)
+import '@composable-layout/components';
+
+export async function getStaticPaths() {
+  const pages = await getAllPages();
+  return pages.map((page: any) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title={page.title} seoTitle={page.seoTitle} seoDescription={page.seoDescription}>
+  <PageBuilder sections={page.sections ?? []} />
+</BaseLayout>
