@@ -1,6 +1,6 @@
 # Composable Layout
 
-A flexible system that empowers non-technical users—primarily marketing and content teams—to independently create, assemble, and update web pages using composable Layout and Display elements.
+A flexible system for creating and assembling web pages using composable Layout and Display elements built as web components.
 
 ## How It Works
 
@@ -11,16 +11,17 @@ Pages are built from two core primitives:
 
 Layout elements control placement and flow. Display elements own their content and styling. This separation keeps pages consistent while remaining flexible.
 
+Content is authored in **MDX files**, where you use the web components directly with inline props — no intermediate layers or CMS required.
+
 ## Project Structure
 
-This is a monorepo with three workspaces:
+This is a monorepo with two workspaces:
 
 ```
 packages/
   components/   → Lit web components (layouts + displays + design tokens)
-  studio/       → Sanity CMS schemas for page building
 apps/
-  web/          → Astro frontend that renders pages from Sanity
+  web/          → Astro frontend that renders MDX pages
 ```
 
 ### `@composable-layout/components`
@@ -35,20 +36,36 @@ Web components built with [Lit](https://lit.dev):
 
 All components share a design token system for spacing, colors, borders, shadows, and widths.
 
-### `@composable-layout/studio`
-
-[Sanity](https://www.sanity.io/) CMS configuration with schemas for pages, layout sections, display items, and style properties. Allows content teams to visually compose pages by selecting layouts, inserting displays, and adjusting styles.
-
 ### `@composable-layout/web`
 
-[Astro](https://astro.build/) frontend with static site generation. Fetches page data from Sanity and renders it using the component library via `@astrojs/lit`.
+[Astro](https://astro.build/) frontend with static site generation. Pages are MDX files in `src/content/pages/` that use the layout and display components directly.
+
+Example page (`src/content/pages/example.mdx`):
+
+```mdx
+---
+title: Example
+---
+
+<layout-stack padding="lg" max-width="xl" gap="lg">
+  <display-text padding="md">
+    ## Hello World
+
+    This is a composable layout.
+  </display-text>
+
+  <layout-row columns="50/50" gap="md">
+    <display-card heading="First" body="Description" />
+    <display-card heading="Second" body="Description" />
+  </layout-row>
+</layout-stack>
+```
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- A [Sanity](https://www.sanity.io/) project (for CMS functionality)
 
 ### Install
 
@@ -69,20 +86,34 @@ npm test -w packages/components
 npm run dev -w packages/components
 ```
 
-### Studio
-
-Add your Sanity project ID in `packages/studio/sanity.config.ts`, then:
-
-```sh
-npm run dev -w packages/studio
-```
-
 ### Web
 
-Create a `.env` file in `apps/web/` with your Sanity credentials, then:
-
 ```sh
+# Build components first (required)
+npm run build -w packages/components
+
+# Start the dev server
 npm run dev -w apps/web
+```
+
+### Adding Pages
+
+Create a new `.mdx` file in `apps/web/src/content/pages/`. The filename becomes the URL path (`about.mdx` → `/about`). Add frontmatter with at least a `title`:
+
+```mdx
+---
+title: About
+seoTitle: About — Composable Layout
+seoDescription: Learn more about composable layouts.
+---
+
+<layout-stack padding="lg" max-width="xl">
+  <display-text padding="md">
+    ## About
+
+    Your content here.
+  </display-text>
+</layout-stack>
 ```
 
 ## Design Principles
@@ -90,4 +121,4 @@ npm run dev -w apps/web
 - **Separation of concerns** — Layouts handle structure, displays handle content
 - **Container queries** — Display elements respond to their container, not the viewport
 - **Token-driven consistency** — Shared design tokens enforce visual rhythm across all components
-- **CMS-first** — Every layout and display property is editable in Sanity
+- **Content as components** — MDX pages use web components directly, keeping authoring declarative and simple
