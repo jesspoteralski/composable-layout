@@ -23,8 +23,7 @@ export default defineConfig({
   name: 'composable-layout',
   title: 'Composable Layout',
 
-  // TODO: Replace with your Sanity project ID and dataset
-  projectId: 'your-project-id',
+  projectId: '8q6jga63',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],
