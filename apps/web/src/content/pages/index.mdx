@@ -1,0 +1,52 @@
+---
+title: Home
+seoTitle: Composable Layout — Design System Demo
+seoDescription: A flexible system for assembling web pages using composable Layout and Display elements.
+---
+
+<layout-stack padding="lg" max-width="xl" gap="lg">
+  <display-text padding="md" bg="brand-50" border-radius="md">
+    ## Welcome to Composable Layout
+
+    A flexible system for creating and assembling web pages using composable **Layout** and **Display** elements. Mix and match layouts (stack, row, grid) with displays (text, image, card) to build any page.
+  </display-text>
+
+  <layout-row columns="50/50" gap="md">
+    <display-card
+      heading="Layout Components"
+      body="Stack, Row, and Grid layouts give you full control over how content is arranged on the page."
+      cta-text="Learn More"
+      cta-href="/features"
+      padding="md"
+      border="thin"
+      border-radius="md"
+    />
+    <display-card
+      heading="Display Components"
+      body="Text, Image, and Card displays let you present content in flexible, styled containers."
+      cta-text="Learn More"
+      cta-href="/features"
+      padding="md"
+      border="thin"
+      border-radius="md"
+    />
+  </layout-row>
+
+  <layout-grid min-item-width="200px" gap="sm">
+    <display-text padding="sm" bg="gray-50" border-radius="sm">
+      ### Token-Driven
+
+      Design tokens power every style option — spacing, colors, borders, and shadows.
+    </display-text>
+    <display-text padding="sm" bg="gray-50" border-radius="sm">
+      ### Web Components
+
+      Built with Lit, these components work in any framework or plain HTML.
+    </display-text>
+    <display-text padding="sm" bg="gray-50" border-radius="sm">
+      ### Container Queries
+
+      Components respond to their container size, not the viewport.
+    </display-text>
+  </layout-grid>
+</layout-stack>
