@@ -1,0 +1,18 @@
+---
+import { toAttrs } from '../../lib/attrs';
+
+interface Props {
+  item: any;
+}
+
+const { item } = Astro.props;
+const attrs = toAttrs(item.styles);
+---
+
+<display-image
+  src={item.imageSrc ?? ''}
+  alt={item.alt ?? ''}
+  caption={item.caption ?? ''}
+  aspect-ratio={item.aspectRatio ?? ''}
+  {...attrs}
+/>

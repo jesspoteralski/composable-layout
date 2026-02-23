@@ -1,0 +1,13 @@
+diff --git a/node_modules/@astrojs/lit/server.js b/node_modules/@astrojs/lit/server.js
+index e9873a0..aea7007 100644
+--- a/node_modules/@astrojs/lit/server.js
++++ b/node_modules/@astrojs/lit/server.js
+@@ -65,6 +65,8 @@ function* render(Component, attrs, slots) {
+ 		elementRenderers: [LitElementRenderer],
+ 		customElementInstanceStack: [instance],
+ 		customElementHostStack: [instance],
++		eventTargetStack: [],
++		slotStack: [],
+ 		deferHydration: false,
+ 	});
+ 	if (shadowContents !== undefined) {

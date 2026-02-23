@@ -9,11 +9,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.0.0",
     "@astrojs/lit": "^4.0.0",
-    "lit": "^3.1.0",
-    "@sanity/client": "^6.12.0",
+    "@composable-layout/components": "*",
     "@portabletext/to-html": "^5.0.0",
-    "@composable-layout/components": "*"
+    "@sanity/client": "^6.12.0",
+    "@webcomponents/template-shadowroot": "^0.2.1",
+    "astro": "^5.0.0",
+    "lit": "^3.1.0"
   }
 }
